@@ -1,0 +1,291 @@
+{
+  "CatalogVersion": "0.1b",
+  "Catalog": [
+    {
+      "ItemId": "wpn1",
+      "ItemClass": "Sword",
+      "CatalogVersion": "0.1b",
+      "DisplayName": "Iron Sword",
+      "Description": "Simple Iron Sword",
+      "VirtualCurrencyPrices": {
+        "SL": 10
+      },
+      "RealCurrencyPrices": {},
+      "Tags": [
+        "sword",
+        "onehanded",
+        "iron",
+        "normal",
+        "weapon"
+      ],
+      "CustomData": null,
+      "Consumable": {
+        "UsageCount": null,
+        "UsagePeriod": null,
+        "UsagePeriodGroup": null
+      },
+      "Container": null,
+      "Bundle": null,
+      "CanBecomeCharacter": false,
+      "IsStackable": false,
+      "IsTradable": true,
+      "ItemImageUrl": null,
+      "IsLimitedEdition": false,
+      "InitialLimitedEditionCount": 0,
+      "ActivatedMembership": null
+    },
+    {
+      "ItemId": "wpn2",
+      "ItemClass": "Axe",
+      "CatalogVersion": "0.1b",
+      "DisplayName": "Iron Axe",
+      "Description": "Simple Axe",
+      "VirtualCurrencyPrices": {
+        "SL": 10
+      },
+      "RealCurrencyPrices": {},
+      "Tags": [
+        "axe",
+        "onehanded",
+        "weapon",
+        "iron"
+      ],
+      "CustomData": null,
+      "Consumable": {
+        "UsageCount": null,
+        "UsagePeriod": null,
+        "UsagePeriodGroup": null
+      },
+      "Container": null,
+      "Bundle": null,
+      "CanBecomeCharacter": false,
+      "IsStackable": false,
+      "IsTradable": true,
+      "ItemImageUrl": null,
+      "IsLimitedEdition": false,
+      "InitialLimitedEditionCount": 0,
+      "ActivatedMembership": null
+    },
+    {
+      "ItemId": "wpn3",
+      "ItemClass": "Sword",
+      "CatalogVersion": "0.1b",
+      "DisplayName": "Magic Sword",
+      "Description": "Sword with magic power",
+      "VirtualCurrencyPrices": {
+        "SL": 100
+      },
+      "RealCurrencyPrices": {},
+      "Tags": [
+        "sword",
+        "onehanded",
+        "iron",
+        "magic",
+        "weapon"
+      ],
+      "CustomData": null,
+      "Consumable": {
+        "UsageCount": null,
+        "UsagePeriod": null,
+        "UsagePeriodGroup": null
+      },
+      "Container": null,
+      "Bundle": null,
+      "CanBecomeCharacter": false,
+      "IsStackable": false,
+      "IsTradable": true,
+      "ItemImageUrl": null,
+      "IsLimitedEdition": false,
+      "InitialLimitedEditionCount": 0,
+      "ActivatedMembership": null
+    },
+    {
+      "ItemId": "wpn4",
+      "ItemClass": "Axe",
+      "CatalogVersion": "0.1b",
+      "DisplayName": "Golden Axe",
+      "Description": "Old...oldschool axe..",
+      "VirtualCurrencyPrices": {
+        "SL": 100
+      },
+      "RealCurrencyPrices": null,
+      "Tags": [
+        "fine",
+        "axe",
+        "onehanded",
+        "weapon"
+      ],
+      "CustomData": null,
+      "Consumable": {
+        "UsageCount": null,
+        "UsagePeriod": null,
+        "UsagePeriodGroup": null
+      },
+      "Container": null,
+      "Bundle": null,
+      "CanBecomeCharacter": false,
+      "IsStackable": false,
+      "IsTradable": true,
+      "ItemImageUrl": null,
+      "IsLimitedEdition": false,
+      "InitialLimitedEditionCount": 0,
+      "ActivatedMembership": null
+    },
+    {
+      "ItemId": "arm1",
+      "ItemClass": "Armor",
+      "CatalogVersion": "0.1b",
+      "DisplayName": "Iron Armor",
+      "Description": "Simple armor",
+      "VirtualCurrencyPrices": {
+        "SL": 30
+      },
+      "RealCurrencyPrices": null,
+      "Tags": [
+        "armor",
+        "iron",
+        "normal"
+      ],
+      "CustomData": null,
+      "Consumable": {
+        "UsageCount": null,
+        "UsagePeriod": null,
+        "UsagePeriodGroup": null
+      },
+      "Container": null,
+      "Bundle": null,
+      "CanBecomeCharacter": false,
+      "IsStackable": false,
+      "IsTradable": true,
+      "ItemImageUrl": null,
+      "IsLimitedEdition": false,
+      "InitialLimitedEditionCount": 0,
+      "ActivatedMembership": null
+    },
+    {
+      "ItemId": "arm2",
+      "ItemClass": "Armor",
+      "CatalogVersion": "0.1b",
+      "DisplayName": "Steel Armor",
+      "Description": "Good armor",
+      "VirtualCurrencyPrices": {
+        "SL": 50
+      },
+      "RealCurrencyPrices": null,
+      "Tags": [
+        "fine",
+        "armor",
+        "steel"
+      ],
+      "CustomData": null,
+      "Consumable": {
+        "UsageCount": null,
+        "UsagePeriod": null,
+        "UsagePeriodGroup": null
+      },
+      "Container": null,
+      "Bundle": null,
+      "CanBecomeCharacter": false,
+      "IsStackable": false,
+      "IsTradable": true,
+      "ItemImageUrl": null,
+      "IsLimitedEdition": false,
+      "InitialLimitedEditionCount": 0,
+      "ActivatedMembership": null
+    },
+    {
+      "ItemId": "arm3",
+      "ItemClass": "Armor",
+      "CatalogVersion": "0.1b",
+      "DisplayName": "Magic Armor",
+      "Description": "Magic armor with the force in it!",
+      "VirtualCurrencyPrices": {
+        "SL": 100
+      },
+      "RealCurrencyPrices": null,
+      "Tags": [
+        "magic",
+        "armor",
+        "fine"
+      ],
+      "CustomData": null,
+      "Consumable": {
+        "UsageCount": null,
+        "UsagePeriod": null,
+        "UsagePeriodGroup": null
+      },
+      "Container": null,
+      "Bundle": null,
+      "CanBecomeCharacter": false,
+      "IsStackable": false,
+      "IsTradable": true,
+      "ItemImageUrl": null,
+      "IsLimitedEdition": false,
+      "InitialLimitedEditionCount": 0,
+      "ActivatedMembership": null
+    },
+    {
+      "ItemId": "pot1",
+      "ItemClass": "Potion",
+      "CatalogVersion": "0.1b",
+      "DisplayName": "Health Potion",
+      "Description": "May the heal be with you!",
+      "VirtualCurrencyPrices": {
+        "SL": 5
+      },
+      "RealCurrencyPrices": {},
+      "Tags": [
+        "potion",
+        "health",
+        "fine"
+      ],
+      "CustomData": null,
+      "Consumable": {
+        "UsageCount": 1,
+        "UsagePeriod": null,
+        "UsagePeriodGroup": null
+      },
+      "Container": null,
+      "Bundle": null,
+      "CanBecomeCharacter": false,
+      "IsStackable": true,
+      "IsTradable": false,
+      "ItemImageUrl": null,
+      "IsLimitedEdition": false,
+      "InitialLimitedEditionCount": 0,
+      "ActivatedMembership": null
+    },
+    {
+      "ItemId": "pot2",
+      "ItemClass": "Potion",
+      "CatalogVersion": "0.1b",
+      "DisplayName": "Health Potion 2",
+      "Description": "May the more heal be with you!",
+      "VirtualCurrencyPrices": {
+        "SL": 10
+      },
+      "RealCurrencyPrices": null,
+      "Tags": [
+        "potion",
+        "health",
+        "fine"
+      ],
+      "CustomData": null,
+      "Consumable": {
+        "UsageCount": 1,
+        "UsagePeriod": null,
+        "UsagePeriodGroup": null
+      },
+      "Container": null,
+      "Bundle": null,
+      "CanBecomeCharacter": false,
+      "IsStackable": true,
+      "IsTradable": false,
+      "ItemImageUrl": null,
+      "IsLimitedEdition": false,
+      "InitialLimitedEditionCount": 0,
+      "ActivatedMembership": null
+    }
+  ],
+  "DropTables": []
+}
