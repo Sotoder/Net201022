@@ -18,6 +18,7 @@ public class RoomButton : MonoBehaviour, IPointerClickHandler
     [SerializeField] private Color _selectedColor;
 
     private Color _idleColor;
+    private Color _idleTextColor;
     private string _ownerName;
 
     public void Init(RoomInfo roomInfo)
@@ -31,7 +32,7 @@ public class RoomButton : MonoBehaviour, IPointerClickHandler
         }
         _roomName.text = roomInfo.Name;
         _idleColor = _backGroundImage.color;
-        IsCloseOrNotVisible = false;
+        _idleTextColor = _roomName.color;
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -67,6 +68,16 @@ public class RoomButton : MonoBehaviour, IPointerClickHandler
     public void SetCloseOrInvisibleStatus()
     {
         IsCloseOrNotVisible = true;
-        _backGroundImage.color = new Color(_idleColor.r, _idleColor.g, _idleColor.b, _idleColor.a * 0.5f);
+        _backGroundImage.color = new Color(_idleColor.r, _idleColor.g, _idleColor.b, _idleColor.a * 0.2f);
+        _roomName.color = new Color(_idleTextColor.r, _idleTextColor.g, _idleTextColor.b, _idleTextColor.a * 0.2f);
+        _roomOwner.color = new Color(_idleTextColor.r, _idleTextColor.g, _idleTextColor.b, _idleTextColor.a * 0.2f);
+    }
+
+    public void TakeOffCloseOrInvisibleStatus()
+    {
+        IsCloseOrNotVisible = false;
+        _backGroundImage.color = new Color(_idleColor.r, _idleColor.g, _idleColor.b, _idleColor.a);
+        _roomName.color = new Color(_idleTextColor.r, _idleTextColor.g, _idleTextColor.b, _idleTextColor.a);
+        _roomOwner.color = new Color(_idleTextColor.r, _idleTextColor.g, _idleTextColor.b, _idleTextColor.a);
     }
 }

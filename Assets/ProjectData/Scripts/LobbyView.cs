@@ -30,7 +30,7 @@ public class LobbyView : MonoBehaviour
     [SerializeField] private Transform _roomListTransform;
     [SerializeField] private GameObject _roomButtonPrefab;
 
-    private List<RoomButton> _roomButtons = new List<RoomButton>();
+    private Dictionary<int, RoomButton> _roomButtons = new Dictionary<int, RoomButton>();
     private RoomButton _selectedRoom;
 
     public Button ConnectButton => _connectButton;
@@ -41,6 +41,7 @@ public class LobbyView : MonoBehaviour
     public TMP_Text Catalog => _catalog;
     public Transform RoomListTransform => _roomListTransform;
     public GameObject LobbyPanel => _lobbyPanel;
+    public Dictionary<int, RoomButton> RoomButtons => _roomButtons;
 
     private void Start()
     {
@@ -85,28 +86,29 @@ public class LobbyView : MonoBehaviour
     {
         for (int i = 0; i < roomList.Count; i++)
         {
-            var roomButton = _roomButtons.Find(room => room.RoomInfo.masterClientId == roomList[i].masterClientId);
-            if (roomButton != null)
+            if (!_roomButtons.TryGetValue(roomList[i].masterClientId, out var roomButton))
             {
-                if (!roomList[i].IsOpen || !roomList[i].IsVisible)
-                {
-                    roomButton.SetCloseOrInvisibleStatus();
-                }
+                var roomObject = Instantiate(_roomButtonPrefab, _roomListTransform);
+                roomButton = roomObject.GetComponent<RoomButton>();
+                roomButton.Init(roomList[i]);
+                _roomButtons.Add(roomList[i].masterClientId, roomButton);
 
-                if (roomList[i].RemovedFromList)
-                {
-                    RemoveRoomButton(roomButton);
-                }
-
-                continue;
+                roomButton.OnClickRoomMiniView += SelectPickedRoom;
             }
 
-            var roomObject = Instantiate(_roomButtonPrefab, _roomListTransform);
-            roomButton = roomObject.GetComponent<RoomButton>();
-            roomButton.Init(roomList[i]);
-            _roomButtons.Add(roomButton);
+            if ((!roomList[i].IsOpen || !roomList[i].IsVisible) && !roomButton.IsCloseOrNotVisible)
+            {
+                roomButton.SetCloseOrInvisibleStatus();
+            } 
+            else
+            {
+                roomButton.TakeOffCloseOrInvisibleStatus();
+            }
 
-            roomButton.OnClickRoomMiniView += SelectPickedRoom;
+            if (roomList[i].RemovedFromList)
+            {
+                RemoveRoomButton(roomButton);
+            }
         }
     }
 
@@ -120,7 +122,7 @@ public class LobbyView : MonoBehaviour
 
     private void RemoveRoomButton(RoomButton roomButton)
     {
-        _roomButtons.Remove(roomButton);
+        _roomButtons.Remove(roomButton.RoomInfo.masterClientId);
         roomButton.OnClickRoomMiniView -= SelectPickedRoom;
         Destroy(roomButton.gameObject);
     }

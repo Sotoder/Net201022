@@ -16,8 +16,8 @@ public class RoomView : MonoBehaviour
     [SerializeField] private TMP_Text _nameText;
     [SerializeField] private List<PlayerSlotView> _playerInRoomViews;
 
-    private bool _isVisible;
-    private bool _isOpen;
+    private bool _isVisible = true;
+    private bool _isOpen = true;
     private string _roomOwner;
     private string _playerName;
 
@@ -29,7 +29,7 @@ public class RoomView : MonoBehaviour
     {
         _nameText.text = "Room: " + PhotonNetwork.CurrentRoom.Name;
         _roomOwner = PhotonNetwork.CurrentRoom.CustomProperties[LobbyManager.OWNER].ToString();
-        _playerName = PhotonNetwork.LocalPlayer.NickName
+        _playerName = PhotonNetwork.LocalPlayer.NickName;
 
         if (_roomOwner != _playerName)
         {
