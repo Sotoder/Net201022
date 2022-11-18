@@ -8,16 +8,21 @@ using UnityEngine.UI;
 using Photon.Realtime;
 using ExitGames.Client.Photon;
 
-public class LobbyLoader : MonoBehaviourPunCallbacks
+public class LobbyManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] private LobbyView _lobbyView;
+    [SerializeField] private CreateRoomView _createRoomView;
+    [SerializeField] private RoomView _roomView;
 
     public const string MAP_PROP_KEY = "map";
     public const string OWNER = "owner";
+    public const string FRIENDS = "friends";
+    public const string PASSWORD = "password";
 
 
     private string _playerName;
     private string _playerID;
+    private string[] _friendsList;
 
     private void Start()
     {
@@ -28,7 +33,13 @@ public class LobbyLoader : MonoBehaviourPunCallbacks
 
         _lobbyView.ConnectButton.onClick.AddListener(Connect);
         _lobbyView.DisconnectButton.onClick.AddListener(Disconnect);
-        _lobbyView.CreateRoomButton.onClick.AddListener(CreateRoom);
+        _lobbyView.CreateRoomButton.onClick.AddListener(ShowRoomCreationPanel);
+        _createRoomView.CreateRoomButton.onClick.AddListener(CreateRoom);
+    }
+
+    private void ShowRoomCreationPanel()
+    {
+        _createRoomView.CreateRoomPanel.gameObject.SetActive(true);
     }
 
     private void OnError(PlayFabError error)
@@ -75,27 +86,61 @@ public class LobbyLoader : MonoBehaviourPunCallbacks
 
     private void CreateRoom()
     {
-        var roomName = $"Game Room {Random.Range(0, 100)}";
-
-        var roomOptions = new RoomOptions
+        var roomName = _createRoomView.RoomName;
+        RoomOptions roomOptions = new RoomOptions 
         {
             MaxPlayers = 4,
-            CustomRoomProperties = new Hashtable { { MAP_PROP_KEY, "Map_3" }, { OWNER, _playerName} },
-            CustomRoomPropertiesForLobby = new[] { MAP_PROP_KEY, OWNER },
             IsVisible = true,
             IsOpen = true,
             PublishUserId = true,
             PlayerTtl = 10000
         };
+        
+        if(_createRoomView.ByFriendsToggle.isOn)
+        {
+            _friendsList = _createRoomView.FriendsList.Split(",");
 
-        PhotonNetwork.CreateRoom(roomName, roomOptions);
+            var customRoomProperties = new Hashtable { { MAP_PROP_KEY, "Map_3" }, { OWNER, _playerName }, { FRIENDS, _friendsList } };
+            var customRoomPropertiesForLobby = new[] { MAP_PROP_KEY, OWNER, FRIENDS };
+
+            roomOptions.CustomRoomProperties = customRoomProperties;
+            roomOptions.CustomRoomPropertiesForLobby = customRoomPropertiesForLobby;
+
+        } 
+        else if (_createRoomView.ByPasswordToggle.isOn)
+        {
+            var password = _createRoomView.Password;
+            var customRoomProperties = new Hashtable { { MAP_PROP_KEY, "Map_3" }, { OWNER, _playerName }, { PASSWORD, password } };
+            var customRoomPropertiesForLobby = new[] { MAP_PROP_KEY, OWNER, PASSWORD };
+
+            roomOptions.CustomRoomProperties = customRoomProperties;
+            roomOptions.CustomRoomPropertiesForLobby = customRoomPropertiesForLobby;
+        }
+        else
+        {
+            var customRoomProperties = new Hashtable { { MAP_PROP_KEY, "Map_3" }, { OWNER, _playerName }};
+            var customRoomPropertiesForLobby = new[] { MAP_PROP_KEY, OWNER};
+
+            roomOptions.CustomRoomProperties = customRoomProperties;
+            roomOptions.CustomRoomPropertiesForLobby = customRoomPropertiesForLobby;
+        }
+
+        if(_createRoomView.ByFriendsToggle.isOn)
+        {
+            PhotonNetwork.CreateRoom(roomName, roomOptions, expectedUsers: _friendsList);
+        } else
+        {
+            PhotonNetwork.CreateRoom(roomName, roomOptions);
+        }
 
         Debug.Log("CreateRoom");
+        _createRoomView.CreateRoomPanel.SetActive(false);
     }
 
     private void Disconnect()
     {
         PhotonNetwork.Disconnect();
+        _lobbyView.ClearRoomList();
     }
 
     public override void OnConnectedToMaster()
@@ -116,6 +161,9 @@ public class LobbyLoader : MonoBehaviourPunCallbacks
     public override void OnCreatedRoom()
     {
         base.OnCreatedRoom();
+        _lobbyView.LobbyPanel.SetActive(false);
+        _roomView.gameObject.SetActive(true);
+        _roomView.ShowRoom();
         Debug.Log("OnCreatedRoom");
     }
 
@@ -123,6 +171,7 @@ public class LobbyLoader : MonoBehaviourPunCallbacks
     {
         base.OnJoinedRoom();
         Debug.Log($"OnJoinedRoom {PhotonNetwork.CurrentRoom.Name}");
+        _roomView.OnJoinRoom();
     }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
@@ -143,5 +192,17 @@ public class LobbyLoader : MonoBehaviourPunCallbacks
     {
         base.OnLeftLobby();
         Debug.Log("Left Lobby");
+    }
+
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        base.OnPlayerEnteredRoom(newPlayer);
+        _roomView.OnNewPlayerEntredInRoom(newPlayer);
+    }
+
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        base.OnPlayerLeftRoom(otherPlayer);
+        _roomView.OnPlayerLeftRoom(otherPlayer);
     }
 }

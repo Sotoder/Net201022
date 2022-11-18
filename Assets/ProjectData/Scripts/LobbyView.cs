@@ -8,20 +8,25 @@ using UnityEngine.UI;
 
 public class LobbyView : MonoBehaviour
 {
+    [Header("Lobby")]
+    [SerializeField] private GameObject _lobbyPanel;
     [SerializeField] private TMP_Text _accauntInfo;
-    [SerializeField] private TMP_Text _catalog;
     [SerializeField] private TMP_Text _statusText;
     [SerializeField] private Image _statusImage;
     [SerializeField] private Button _connectButton;
     [SerializeField] private Button _disconnectButton;
-    [SerializeField] private Button _showCatalogButton;
-    [SerializeField] private Button _closeCatalogButton;
-    [SerializeField] private Button _joinToRoomButton;
-    [SerializeField] private Button _createRoomButton;
-    [SerializeField] private GameObject _catalogPanel;
-    [SerializeField] private GameObject _lobbyPanel;
     [SerializeField] private Sprite _connectSprite;
     [SerializeField] private Sprite _disconnectSprite;
+
+    [Header("Catalog")]
+    [SerializeField] private GameObject _catalogPanel;
+    [SerializeField] private TMP_Text _catalog;
+    [SerializeField] private Button _showCatalogButton;
+    [SerializeField] private Button _closeCatalogButton;
+
+    [Header("Rooms")]
+    [SerializeField] private Button _joinToRoomButton;
+    [SerializeField] private Button _createRoomButton;   
     [SerializeField] private Transform _roomListTransform;
     [SerializeField] private GameObject _roomButtonPrefab;
 
@@ -35,9 +40,11 @@ public class LobbyView : MonoBehaviour
     public TMP_Text AccauntInfo => _accauntInfo;
     public TMP_Text Catalog => _catalog;
     public Transform RoomListTransform => _roomListTransform;
+    public GameObject LobbyPanel => _lobbyPanel;
 
     private void Start()
     {
+        _createRoomButton.interactable = false;
         _showCatalogButton.onClick.AddListener(ShowCatalogPanel);
         _closeCatalogButton.onClick.AddListener(CloseCatalogPanel);
 
@@ -59,6 +66,7 @@ public class LobbyView : MonoBehaviour
 
     public void SetOfflineConnectionStatus()
     {
+        _createRoomButton.interactable = false;
         _statusImage.sprite = _disconnectSprite;
         _statusText.text = "<color=red>Offline</color>";
         _connectButton.gameObject.SetActive(true);
@@ -66,6 +74,7 @@ public class LobbyView : MonoBehaviour
     }
     public void SetOnlineConnectionStatus()
     {
+        _createRoomButton.interactable = true;
         _statusImage.sprite = _connectSprite;
         _statusText.text = "<color=green>Online</color>";
         _connectButton.gameObject.SetActive(false);
@@ -98,6 +107,14 @@ public class LobbyView : MonoBehaviour
             _roomButtons.Add(roomButton);
 
             roomButton.OnClickRoomMiniView += SelectPickedRoom;
+        }
+    }
+
+    public void ClearRoomList()
+    {
+        for(int i = 0; i < _roomButtons.Count; i++)
+        {
+            RemoveRoomButton(_roomButtons[i]);
         }
     }
 

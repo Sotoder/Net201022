@@ -18,14 +18,16 @@ public class RoomButton : MonoBehaviour, IPointerClickHandler
     [SerializeField] private Color _selectedColor;
 
     private Color _idleColor;
+    private string _ownerName;
 
     public void Init(RoomInfo roomInfo)
     {
         RoomInfo = roomInfo;
 
-        if(RoomInfo.CustomProperties.ContainsKey(LobbyLoader.OWNER))
+        if(RoomInfo.CustomProperties.ContainsKey(LobbyManager.OWNER))
         {
-            _roomOwner.text = $"Owner: {RoomInfo.CustomProperties[LobbyLoader.OWNER]}";
+            _ownerName = RoomInfo.CustomProperties[LobbyManager.OWNER].ToString();
+            _roomOwner.text = $"Owner: {_ownerName}";
         }
         _roomName.text = roomInfo.Name;
         _idleColor = _backGroundImage.color;
