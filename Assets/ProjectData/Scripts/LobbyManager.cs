@@ -143,7 +143,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
                 { FRIENDS, _friendsList } 
             };
 
-            var customRoomPropertiesForLobby = new[] { MAP_PROP_KEY, OWNER, FRIENDS };
+            var customRoomPropertiesForLobby = new[] { MAP_PROP_KEY, OWNER, READY_PLAYER, READY_STATUS, FRIENDS };
 
             roomOptions.CustomRoomProperties = customRoomProperties;
             roomOptions.CustomRoomPropertiesForLobby = customRoomPropertiesForLobby;
@@ -154,7 +154,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             var password = _createRoomView.Password;
             var customRoomProperties = new Hashtable { { MAP_PROP_KEY, "Map_3" }, { OWNER, _playerName }, { READY_PLAYER, "" },
                 { READY_STATUS, false }, { PASSWORD, password } };
-            var customRoomPropertiesForLobby = new[] { MAP_PROP_KEY, OWNER, PASSWORD };
+            var customRoomPropertiesForLobby = new[] { MAP_PROP_KEY, OWNER, READY_PLAYER, READY_STATUS, PASSWORD };
 
             roomOptions.CustomRoomProperties = customRoomProperties;
             roomOptions.CustomRoomPropertiesForLobby = customRoomPropertiesForLobby;
@@ -163,7 +163,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         {
             var customRoomProperties = new Hashtable { { MAP_PROP_KEY, "Map_3" }, { READY_PLAYER, "" },
                 { READY_STATUS, false }, { OWNER, _playerName }};
-            var customRoomPropertiesForLobby = new[] { MAP_PROP_KEY, OWNER};
+            var customRoomPropertiesForLobby = new[] { MAP_PROP_KEY, OWNER, READY_PLAYER, READY_STATUS};
 
             roomOptions.CustomRoomProperties = customRoomProperties;
             roomOptions.CustomRoomPropertiesForLobby = customRoomPropertiesForLobby;
