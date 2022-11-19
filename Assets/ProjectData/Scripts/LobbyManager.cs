@@ -18,6 +18,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public const string OWNER = "owner";
     public const string FRIENDS = "friends";
     public const string PASSWORD = "password";
+    public const string READY_STATUS = "ready";
+    public const string READY_PLAYER = "ready player";
 
 
     private string _playerName;
@@ -133,7 +135,14 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         {
             _friendsList = _createRoomView.FriendsList.Split(",");
 
-            var customRoomProperties = new Hashtable { { MAP_PROP_KEY, "Map_3" }, { OWNER, _playerName }, { FRIENDS, _friendsList } };
+            var customRoomProperties = new Hashtable 
+            { { MAP_PROP_KEY, "Map_3" }, 
+                { OWNER, _playerName },
+                { READY_PLAYER, "" },
+                { READY_STATUS, false }, 
+                { FRIENDS, _friendsList } 
+            };
+
             var customRoomPropertiesForLobby = new[] { MAP_PROP_KEY, OWNER, FRIENDS };
 
             roomOptions.CustomRoomProperties = customRoomProperties;
@@ -143,7 +152,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         else if (_createRoomView.ByPasswordToggle.isOn)
         {
             var password = _createRoomView.Password;
-            var customRoomProperties = new Hashtable { { MAP_PROP_KEY, "Map_3" }, { OWNER, _playerName }, { PASSWORD, password } };
+            var customRoomProperties = new Hashtable { { MAP_PROP_KEY, "Map_3" }, { OWNER, _playerName }, { READY_PLAYER, "" },
+                { READY_STATUS, false }, { PASSWORD, password } };
             var customRoomPropertiesForLobby = new[] { MAP_PROP_KEY, OWNER, PASSWORD };
 
             roomOptions.CustomRoomProperties = customRoomProperties;
@@ -151,7 +161,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         }
         else
         {
-            var customRoomProperties = new Hashtable { { MAP_PROP_KEY, "Map_3" }, { OWNER, _playerName }};
+            var customRoomProperties = new Hashtable { { MAP_PROP_KEY, "Map_3" }, { READY_PLAYER, "" },
+                { READY_STATUS, false }, { OWNER, _playerName }};
             var customRoomPropertiesForLobby = new[] { MAP_PROP_KEY, OWNER};
 
             roomOptions.CustomRoomProperties = customRoomProperties;
@@ -237,6 +248,21 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         base.OnPlayerLeftRoom(otherPlayer);
         _roomView.OnPlayerLeftRoom(otherPlayer);
+    }
+
+    public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
+    {
+        base.OnRoomPropertiesUpdate(propertiesThatChanged);
+
+        (string, bool) readyCartage;
+
+        if(propertiesThatChanged.ContainsKey(LobbyManager.READY_STATUS))
+        {
+            readyCartage.Item1 = (string)propertiesThatChanged[LobbyManager.READY_PLAYER];
+            readyCartage.Item2 = (bool)propertiesThatChanged[LobbyManager.READY_STATUS];
+
+            _roomView.ChangeGlobalReadyStatus(readyCartage);
+        }
     }
 
     private void OnDestroy()

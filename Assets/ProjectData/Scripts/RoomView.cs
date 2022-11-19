@@ -1,3 +1,4 @@
+using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
 using System;
@@ -12,6 +13,7 @@ public class RoomView : MonoBehaviour
     [SerializeField] private TMP_Text _closeButtonText;
     [SerializeField] private Button _hideRoomButton;
     [SerializeField] private TMP_Text _hideButtonText;
+    [SerializeField] private Toggle _readyToggle;
     [SerializeField] private Button _startGameButton;
     [SerializeField] private TMP_Text _nameText;
     [SerializeField] private List<PlayerSlotView> _playerInRoomViews;
@@ -20,6 +22,8 @@ public class RoomView : MonoBehaviour
     private bool _isOpen = true;
     private string _roomOwner;
     private string _playerName;
+    private Dictionary<string, PlayerSlotView> _slotsByPlayers = new Dictionary<string, PlayerSlotView>();
+
 
     public Button CloseRoomButton => _closeRoomButton;
     public Button HideRoomButton => _hideRoomButton;
@@ -41,7 +45,65 @@ public class RoomView : MonoBehaviour
             _closeRoomButton.onClick.AddListener(ChangeOpenRoomStatus);
             _hideRoomButton.onClick.AddListener(ChangeVisibleRoomStatus);
             _startGameButton.onClick.AddListener(StartGame);
+            _startGameButton.interactable = false;
         }
+
+        _readyToggle.onValueChanged.AddListener(ChangeLocalReadyStatus);
+    }
+
+    private void ChangeLocalReadyStatus(bool value)
+    {
+        _slotsByPlayers[_playerName].ChangeReadyStatus(value);
+
+        SendReadyStatusInfo(_playerName, value);
+    }
+
+    private void SendReadyStatusInfo(string name, bool value)
+    {
+        var customParameters = PhotonNetwork.CurrentRoom.CustomProperties;
+
+        customParameters[LobbyManager.READY_STATUS] = value;
+        customParameters[LobbyManager.READY_PLAYER] = _playerName;
+
+        PhotonNetwork.CurrentRoom.SetCustomProperties(customParameters);
+    }
+
+    public void ChangeGlobalReadyStatus((string, bool) readyCartage)
+    {
+        if (readyCartage.Item1 != _playerName)
+        {
+            _slotsByPlayers[readyCartage.Item1].ChangeReadyStatus(readyCartage.Item2);
+        }
+
+        CheckOverallReadiness();
+    }
+
+    private void CheckOverallReadiness()
+    {
+        if (_roomOwner == _playerName)
+        {
+            if (IsAllReady())
+            {
+                _startGameButton.interactable = true;
+            }
+            else
+            {
+                _startGameButton.interactable = false;
+            }
+        }
+    }
+
+    private bool IsAllReady()
+    {
+        for (int i = 0; i < _playerInRoomViews.Count; i++)
+        {
+            if(_playerInRoomViews[i].Player != null && !_playerInRoomViews[i].IsReady)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private void StartGame()
@@ -66,10 +128,12 @@ public class RoomView : MonoBehaviour
     public void OnNewPlayerEntredInRoom(Player newPlayer)
     {
         FindAndTakeFreeSlot(newPlayer);
+        SendReadyStatusInfo(_playerName, _slotsByPlayers[_playerName].IsReady);
 
         if (_roomOwner == _playerName)
         {
             CheckOnMaxPlayers();
+            CheckOverallReadiness();
         }
     }
 
@@ -102,6 +166,7 @@ public class RoomView : MonoBehaviour
             if (!_playerInRoomViews[i].IsBusy)
             {
                 _playerInRoomViews[i].TakeSlot(newPlayer);
+                _slotsByPlayers.Add(newPlayer.NickName, _playerInRoomViews[i]);
                 break;
             }
         }
@@ -117,7 +182,11 @@ public class RoomView : MonoBehaviour
             }
         }
 
-        CheckOnMaxPlayers();
+        if (_roomOwner == _playerName)
+        {
+            CheckOnMaxPlayers();
+            CheckOverallReadiness();
+        }
     }
 
     private void OnDestroy()
@@ -125,5 +194,6 @@ public class RoomView : MonoBehaviour
         _closeRoomButton.onClick.RemoveAllListeners();
         _hideRoomButton.onClick.RemoveAllListeners();
         _startGameButton.onClick.RemoveAllListeners();
+        _readyToggle.onValueChanged.RemoveAllListeners();
     }
 }
