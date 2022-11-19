@@ -158,13 +158,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             roomOptions.CustomRoomPropertiesForLobby = customRoomPropertiesForLobby;
         }
 
-        if(_createRoomView.ByFriendsToggle.isOn)
-        {
-            PhotonNetwork.CreateRoom(roomName, roomOptions, expectedUsers: _friendsList);
-        } else
-        {
-            PhotonNetwork.CreateRoom(roomName, roomOptions);
-        }
+        PhotonNetwork.CreateRoom(roomName, roomOptions);
 
         Debug.Log("CreateRoom");
         _createRoomView.CreateRoomPanel.SetActive(false);
