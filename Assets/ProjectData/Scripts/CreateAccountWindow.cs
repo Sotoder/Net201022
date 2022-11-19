@@ -74,4 +74,10 @@ public class CreateAccountWindow : AccountDataWindowBase
         _statusImage.sprite = null;
         _statusImage.color = new Color(0, 0, 0, 0);
     }
+
+    private void OnDestroy()
+    {
+        _emailField.onValueChanged.RemoveAllListeners();
+        _createAccountButton.onClick.RemoveAllListeners();
+    }
 }

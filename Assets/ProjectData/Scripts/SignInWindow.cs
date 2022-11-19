@@ -64,4 +64,9 @@ public class SignInWindow : AccountDataWindowBase
         _statusImage.sprite = null;
         _statusImage.color = new Color(0, 0, 0, 0);
     }
+
+    private void OnDestroy()
+    {
+        _signInButton.onClick.RemoveAllListeners();
+    }
 }

@@ -74,7 +74,7 @@ public class RoomView : MonoBehaviour
     }
 
     public void OnJoinRoom()
-    {
+    {     
         foreach(var player in PhotonNetwork.CurrentRoom.Players)
         {
             FindAndTakeFreeSlot(player.Value);
@@ -111,12 +111,19 @@ public class RoomView : MonoBehaviour
     {
         for(int i = 0; i < _playerInRoomViews.Count; i++)
         {
-            if(_playerInRoomViews[i].Player.NickName == player.NickName)
+            if (_playerInRoomViews[i].Player != null && (_playerInRoomViews[i].Player.NickName == player.NickName))
             {
                 _playerInRoomViews[i].ClearSlot();
             }
         }
 
         CheckOnMaxPlayers();
+    }
+
+    private void OnDestroy()
+    {
+        _closeRoomButton.onClick.RemoveAllListeners();
+        _hideRoomButton.onClick.RemoveAllListeners();
+        _startGameButton.onClick.RemoveAllListeners();
     }
 }

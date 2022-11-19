@@ -29,4 +29,10 @@ public class AccountDataWindowBase : MonoBehaviour
     {
         _username = username;
     }
+
+    private void OnDestroy()
+    {
+        _usernameField.onValueChanged.RemoveAllListeners();
+        _passwordField.onValueChanged.RemoveAllListeners();
+    }
 }

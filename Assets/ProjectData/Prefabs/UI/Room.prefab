@@ -231,6 +231,9 @@ MonoBehaviour:
   _roomOwner: {fileID: 3223913842016937707}
   _backGroundImage: {fileID: 2163364346603419182}
   _selectedColor: {r: 0, g: 0, b: 0, a: 0}
+  _normalColor: {r: 0.5686275, g: 0.6156863, b: 0.6666667, a: 1}
+  _passwordColor: {r: 0.48584908, g: 0.76172954, b: 1, a: 1}
+  _friendsColor: {r: 0.5166429, g: 0.8490566, b: 0.52621454, a: 1}
 --- !u!1 &7780047801918483843
 GameObject:
   m_ObjectHideFlags: 0

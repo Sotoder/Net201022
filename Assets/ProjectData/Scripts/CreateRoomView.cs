@@ -97,4 +97,14 @@ public class CreateRoomView : MonoBehaviour
             _createRoomButton.interactable = true;
         }
     }
+
+    private void OnDestroy()
+    {
+        _roomName.onValueChanged.RemoveAllListeners();
+        _friendsList.onValueChanged.RemoveAllListeners();
+        _password.onValueChanged.RemoveAllListeners();
+        _byPasswordToggle.onValueChanged.RemoveAllListeners();
+        _byFriendsToggle.onValueChanged.RemoveAllListeners();
+        _backButton.onClick.RemoveAllListeners();
+    }
 }

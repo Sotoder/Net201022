@@ -34,7 +34,39 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         _lobbyView.ConnectButton.onClick.AddListener(Connect);
         _lobbyView.DisconnectButton.onClick.AddListener(Disconnect);
         _lobbyView.CreateRoomButton.onClick.AddListener(ShowRoomCreationPanel);
+        _lobbyView.JoinToRoomButton.onClick.AddListener(JoinToRoom);
+        _lobbyView.AcceptPasswordButton.onClick.AddListener(CheckPassword);
+        _lobbyView.CancelPasswordButton.onClick.AddListener(ClosePasswordPanel);
         _createRoomView.CreateRoomButton.onClick.AddListener(CreateRoom);
+    }
+
+    private void ClosePasswordPanel()
+    {
+        _lobbyView.PasswordPanel.SetActive(false);
+    }
+
+    private void CheckPassword()
+    {
+        if(_lobbyView.SelectedRoom.CheckPassword(_lobbyView.PasswordField.text))
+        {
+            PhotonNetwork.JoinRoom(_lobbyView.SelectedRoom.RoomInfo.Name);
+            _lobbyView.PasswordPanel.SetActive(false);
+        } else
+        {
+            _lobbyView.PasswordField.text = "WRONG!!!!";
+        }
+    }
+
+    private void JoinToRoom()
+    {
+        if(_lobbyView.SelectedRoom.RoomType == RoomTypes.PrivatByPassword)
+        {
+            _lobbyView.PasswordPanel.SetActive(true);
+        }
+        else
+        {
+            PhotonNetwork.JoinRoom(_lobbyView.SelectedRoom.RoomInfo.Name);
+        }
     }
 
     private void ShowRoomCreationPanel()
@@ -82,6 +114,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         PhotonNetwork.NickName = _playerName;
         PhotonNetwork.ConnectUsingSettings();
         PhotonNetwork.GameVersion = PhotonNetwork.AppVersion;
+        _lobbyView.SetPlayerName(_playerName);
     }
 
     private void CreateRoom()
@@ -161,16 +194,22 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public override void OnCreatedRoom()
     {
         base.OnCreatedRoom();
+        OpenRoomView();
+        Debug.Log("OnCreatedRoom");
+    }
+
+    private void OpenRoomView()
+    {
         _lobbyView.LobbyPanel.SetActive(false);
         _roomView.gameObject.SetActive(true);
         _roomView.ShowRoom();
-        Debug.Log("OnCreatedRoom");
     }
 
     public override void OnJoinedRoom()
     {
         base.OnJoinedRoom();
         Debug.Log($"OnJoinedRoom {PhotonNetwork.CurrentRoom.Name}");
+        OpenRoomView();
         _roomView.OnJoinRoom();
     }
 
@@ -204,5 +243,16 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         base.OnPlayerLeftRoom(otherPlayer);
         _roomView.OnPlayerLeftRoom(otherPlayer);
+    }
+
+    private void OnDestroy()
+    {
+        _lobbyView.ConnectButton.onClick.RemoveAllListeners();
+        _lobbyView.DisconnectButton.onClick.RemoveAllListeners();
+        _lobbyView.CreateRoomButton.onClick.RemoveAllListeners();
+        _lobbyView.JoinToRoomButton.onClick.RemoveAllListeners();
+        _lobbyView.AcceptPasswordButton.onClick.RemoveAllListeners();
+        _lobbyView.CancelPasswordButton.onClick.RemoveAllListeners();
+        _createRoomView.CreateRoomButton.onClick.RemoveAllListeners();
     }
 }
