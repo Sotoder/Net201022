@@ -180,13 +180,13 @@ public class LobbyView : MonoBehaviour
                 if (!_roomButtons[i].IsSelected)
                 {
                     _roomButtons[i].SelectView();
-                    SetJoinButtonInteractabeState(true);
+                    SetJoinButtonInteractableState(true);
                 }
                 else
                 {
                     _roomButtons[i].DeselectView();
                     _selectedRoom = null;
-                    SetJoinButtonInteractabeState(false);
+                    SetJoinButtonInteractableState(false);
                 }
             }
             else
@@ -199,7 +199,7 @@ public class LobbyView : MonoBehaviour
         }
     }
 
-    private void SetJoinButtonInteractabeState(bool isInteractable)
+    private void SetJoinButtonInteractableState(bool isInteractable)
     {
         _joinToRoomButton.interactable = isInteractable;
     }
