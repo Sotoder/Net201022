@@ -24,12 +24,25 @@ public class CharacterView : MonoBehaviour, IPointerClickHandler
 
     private Color _idleColor;
     private CharacterResult _characterResult;
+    
 
     private void Start()
     {
         _idleColor = _backGroundImage.color;
     }
-    
+
+    private void OnGetCharacterData(GetCharacterStatisticsResult result)
+    {
+        _hpText.text = "HP: " + result.CharacterStatistics[ConstantsForPlayFab.CHARACTER_HP].ToString();
+        _dmgText.text = "DMG: " + result.CharacterStatistics[ConstantsForPlayFab.CHARACTER_DMG].ToString();
+    }
+
+    private void OnError(PlayFabError error)
+    {
+        var errorMessage = error.GenerateErrorReport();
+        Debug.Log(errorMessage);
+    }
+
     public void Init(CharacterResult characterResult)
     {
         _characterResult = characterResult;
@@ -45,18 +58,6 @@ public class CharacterView : MonoBehaviour, IPointerClickHandler
         {
             CharacterId = characterResult.CharacterId
         }, OnGetCharacterData, OnError);
-    }
-
-    private void OnGetCharacterData(GetCharacterStatisticsResult result)
-    {
-        _hpText.text = "HP: " + result.CharacterStatistics[ConstantsForPlayFab.CHARACTER_HP].ToString();
-        _dmgText.text = "DMG: " + result.CharacterStatistics[ConstantsForPlayFab.CHARACTER_DMG].ToString();
-    }
-
-    private void OnError(PlayFabError error)
-    {
-        var errorMessage = error.GenerateErrorReport();
-        Debug.Log(errorMessage);
     }
 
     public void OnPointerClick(PointerEventData eventData)
