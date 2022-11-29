@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class RoomView : MonoBehaviour
@@ -116,8 +117,13 @@ public class RoomView : MonoBehaviour
 
         customParameters[ConstantsForPhoton.READY_STATUS] = value;
         customParameters[ConstantsForPhoton.READY_PLAYER] = _playerName;
-
         PhotonNetwork.CurrentRoom.SetCustomProperties(customParameters);
+
+        var playerProperties = PhotonNetwork.LocalPlayer.CustomProperties;
+
+        playerProperties[ConstantsForPhoton.CHARACTER_ID] = _selectedCharacter is null ? "" : _selectedCharacter.CharacterResult.CharacterId;
+        playerProperties[ConstantsForPhoton.CHARACTER_TYPE] = _selectedCharacter is null ? "" : _selectedCharacter.CharacterResult.CharacterType;
+        PhotonNetwork.LocalPlayer.SetCustomProperties(playerProperties);
     }
 
     public void ChangeGlobalReadyStatus((string, bool) readyCartage)
@@ -161,6 +167,8 @@ public class RoomView : MonoBehaviour
     private void StartGame()
     {
         Debug.Log("And Finaly we started /sigh");
+        PhotonNetwork.LoadLevel(2);
+        ChangeOpenRoomStatus();
     }
 
     private void ChangeVisibleRoomStatus()
@@ -190,8 +198,8 @@ public class RoomView : MonoBehaviour
     }
 
     public void OnJoinRoom()
-    {     
-        foreach(var player in PhotonNetwork.CurrentRoom.Players)
+    {
+        foreach (var player in PhotonNetwork.CurrentRoom.Players)
         {
             FindAndTakeFreeSlot(player.Value);
         }

@@ -115,6 +115,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         PhotonNetwork.NickName = _playerName;
         PhotonNetwork.ConnectUsingSettings();
         PhotonNetwork.GameVersion = PhotonNetwork.AppVersion;
+        PhotonNetwork.AutomaticallySyncScene = true;
         _lobbyView.SetPlayerName(_playerName);
     }
 
@@ -139,7 +140,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
                 { ConstantsForPhoton.OWNER, _playerName },
                 { ConstantsForPhoton.READY_PLAYER, "" },
                 { ConstantsForPhoton.READY_STATUS, false }, 
-                { ConstantsForPhoton.FRIENDS, _friendsList } 
+                { ConstantsForPhoton.FRIENDS, _friendsList },
+                { ConstantsForPhoton.CHARACTER_ID, ""},
+                { ConstantsForPhoton.CHARACTER_TYPE, "" }
             };
 
             var customRoomPropertiesForLobby = new[] { ConstantsForPhoton.MAP_PROP_KEY, ConstantsForPhoton.OWNER,
@@ -200,7 +203,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public override void OnCreatedRoom()
     {
         base.OnCreatedRoom();
-        OpenRoomView();
         Debug.Log("OnCreatedRoom");
     }
 
