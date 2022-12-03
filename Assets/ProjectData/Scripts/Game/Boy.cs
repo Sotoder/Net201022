@@ -57,7 +57,8 @@ public abstract class Boy: MonoBehaviourPunCallbacks, IOnEventCallback
 
     protected void Move()
     {
-        var move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+
+        var move = transform.TransformDirection(new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")));
 
         _characterController.Move(move * Time.deltaTime * _speed);
     }
